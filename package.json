@@ -1,15 +1,16 @@
 {
-  "name": "node-template",
+  "name": "nodejs-calculator",
   "version": "1.0.0",
   "type": "module",
-  "description": "Base template for projects developed on the Node.JS Course by LearnThis",
+  "description": "Calculator on NodeJS. First practice",
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "lint": "eslint src/**/*.js --fix",
     "prettier": "prettier --write .",
     "prepare": "husky install",
-    "commit": "commit"
+    "commit": "commit",
+    "postinstall": "npm run prepare"
   },
   "author": {
     "name": "Esteban Salazar Zapata - Boamorte88",
