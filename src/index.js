@@ -9,7 +9,7 @@ import { promptQuestion } from '#Lib/promptQuestion.js';
       'Introduce your action or operation:\n'
     );
 
-    // 2 Validate entry
+    // 2 Validate entry and get all the elements of the operation
     const standardAnswer = userAnswer.trim();
 
     if (standardAnswer === '') throw new InvalidInputError();
@@ -20,7 +20,7 @@ import { promptQuestion } from '#Lib/promptQuestion.js';
   } catch (error) {
     if (error instanceof InvalidInputError) console.log(error.message);
     else
-      console.log(`No handled error: ${error.message}. Stack: ${error.stack}`);
+      console.log(`Unexpected error: ${error.message}. Stack: ${error.stack}`);
   }
 
   // 3 Do the operation
