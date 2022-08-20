@@ -1,4 +1,6 @@
+import { BINARY_OPERATORS } from '#Constants/operators.js';
 import { InvalidInputError } from '#Errors/invalidInputError.js';
+import { getBinaryOperatings, getUnaryOperatings } from '#Lib/getOperatings.js';
 import { getOperator } from '#Lib/getOperator.js';
 import { promptQuestion } from '#Lib/promptQuestion.js';
 
@@ -12,11 +14,25 @@ import { promptQuestion } from '#Lib/promptQuestion.js';
     // 2 Validate entry and get all the elements of the operation
     const standardAnswer = userAnswer.trim();
 
-    if (standardAnswer === '') throw new InvalidInputError();
+    if (standardAnswer === 'exit') {
+      process.exit(0);
+    }
+
+    if (!standardAnswer) throw new InvalidInputError();
 
     const operator = getOperator(standardAnswer);
 
     if (!operator) throw new InvalidInputError();
+
+    const operands = standardAnswer.split(operator);
+
+    let firstOperating, secondOperating;
+    if (BINARY_OPERATORS.includes(operator)) {
+      [firstOperating, secondOperating] = getBinaryOperatings(operands);
+    } else {
+      [firstOperating] = getUnaryOperatings(operands);
+    }
+    console.log(firstOperating, secondOperating);
   } catch (error) {
     if (error instanceof InvalidInputError) console.log(error.message);
     else
