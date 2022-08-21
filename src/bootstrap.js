@@ -1,8 +1,6 @@
-import { BINARY_OPERATORS } from '#Constants/operators.js';
 import { InvalidInputError } from '#Errors/invalidInputError.js';
 import { InvalidOperationError } from '#Errors/invalidOperationError.js';
-import { getBinaryOperatings, getUnaryOperatings } from '#Lib/getOperatings.js';
-import { getOperator } from '#Lib/getOperator.js';
+import { extractByRegex } from '#Lib/extractByRegex.js';
 import { operations } from '#Lib/makeOperation.js';
 import { promptQuestion } from '#Lib/promptQuestion.js';
 
@@ -14,27 +12,16 @@ export const bootstrap = async () => {
     );
 
     // 2 Validate entry and get all the elements of the operation
-    const standardAnswer = userAnswer.trim();
+    const standardAnswer = userAnswer.trim().replaceAll(',', '.');
 
+    if (!standardAnswer) throw new InvalidInputError();
     if (standardAnswer === 'exit') {
       return true;
       // process.exit(0);
     }
 
-    if (!standardAnswer) throw new InvalidInputError();
-
-    const operator = getOperator(standardAnswer);
-
-    if (!operator) throw new InvalidInputError();
-
-    const operands = standardAnswer.split(operator);
-
-    let firstOperating, secondOperating;
-    if (BINARY_OPERATORS.includes(operator)) {
-      [firstOperating, secondOperating] = getBinaryOperatings(operands);
-    } else {
-      [firstOperating] = getUnaryOperatings(operands);
-    }
+    const [firstOperating, operator, secondOperating] =
+      extractByRegex(standardAnswer);
 
     // 3 Do the operation
     const result = operations[operator](firstOperating, secondOperating);
